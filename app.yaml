@@ -1,6 +1,6 @@
 runtime: python
 env: flex
-entrypoint: gunicorn -b :$PORT main:app
+entrypoint: --worker-class eventlet -w 1 main:app
 
 manual_scaling:
   instances: 1
