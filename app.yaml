@@ -1,0 +1,7 @@
+runtime: python
+env: flex
+entrypoint: gunicorn -b :$PORT web_app:app
+
+manual_scaling:
+  instances: 1
+
