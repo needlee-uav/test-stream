@@ -1,5 +1,8 @@
 import base64
 import os
+import eventlet
+import eventlet.wsgi
+eventlet.monkey_patch()
 
 import cv2
 import numpy as np
@@ -8,7 +11,7 @@ from flask_socketio import SocketIO, emit
 
 app = Flask(__name__, static_folder="./templates/static")
 app.config["SECRET_KEY"] = "secret!"
-socketio = SocketIO(app)
+socketio = SocketIO(app, CORS_ALLOW_ALL_ORIGINS=True)
 
 
 @app.route("/favicon.ico")
@@ -65,4 +68,4 @@ def index():
 
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True, port=5000, host='0.0.0.0')
+    socketio.run(app, debug=True, port=8080)
