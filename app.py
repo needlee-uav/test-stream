@@ -1,54 +1,68 @@
-from flask import Flask, render_template, request
-import eventlet
-import socketio
-import eventlet.wsgi
-import cv2
-import numpy
 import base64
-sio = socketio.Server()#async_mode=async_mode)
-app = Flask(__name__)
-app.wsgi_app = socketio.WSGIApp(sio, app.wsgi_app)
+import os
 
-dict1={}
-i=0
-@app.route('/')
+import cv2
+import numpy as np
+from flask import Flask, render_template, send_from_directory
+from flask_socketio import SocketIO, emit
+
+app = Flask(__name__, static_folder="./templates/static")
+app.config["SECRET_KEY"] = "secret!"
+socketio = SocketIO(app)
+
+
+@app.route("/favicon.ico")
+def favicon():
+    return send_from_directory(
+        os.path.join(app.root_path, "static"),
+        "favicon.ico",
+        mimetype="image/vnd.microsoft.icon",
+    )
+
+
+def base64_to_image(base64_string):
+    # Extract the base64 encoded binary data from the input string
+    base64_data = base64_string.split(",")[1]
+    # Decode the base64 data to bytes
+    image_bytes = base64.b64decode(base64_data)
+    # Convert the bytes to numpy array
+    image_array = np.frombuffer(image_bytes, dtype=np.uint8)
+    # Decode the numpy array as an image using OpenCV
+    image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
+    return image
+
+
+@socketio.on("connect")
+def test_connect():
+    print("Connected")
+    emit("my response", {"data": "Connected"})
+
+
+@socketio.on("image")
+def receive_image(image):
+    # Decode the base64-encoded image data
+    image = base64_to_image(image)
+
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    frame_resized = cv2.resize(gray, (640, 360))
+
+    encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
+
+    result, frame_encoded = cv2.imencode(".jpg", frame_resized, encode_param)
+
+    processed_img_data = base64.b64encode(frame_encoded).decode()
+
+    b64_src = "data:image/jpg;base64,"
+    processed_img_data = b64_src + processed_img_data
+
+    emit("processed_image", processed_img_data)
+
+
+@app.route("/")
 def index():
-	return render_template('index.html')
+    return render_template("index.html")
 
-@sio.event()
-def pingpong(sid):
-	print("//////////////////////////")
-	sio.emit("send_data", room=sid)
 
-@sio.event
-def connect(sid, data):	
-	print("[INFO] Connect to the server")
-	pingpong(sid)
-
-@sio.event
-def send(sid, data):
-	global i
-	if sid not in dict1:
-		i+=1
-		dict1[sid]=i
-	key=dict1[sid]
-	#convert(data)
-	print("Reached here")
-	sio.emit('response',{'key':key, 'data':'nice'})
-	sio.emit('image', data)
-	pingpong(sid)
-
-def convert(data):
-	# cv2.imshow('g', data)
-	# cv2.waitKey()
-	#img = cv2.imread('test.jpg')
-	#_, im_arr = cv2.imencode('.jpg', img)  # im_arr: image in Numpy one-dim array format.
-	#im_bytes = im_arr.tobytes()
-	im_b64 = base64.b64encode(data)
-
-@sio.event
-def disconnect(sid):
-	print("[INFO] disconnected from the server")
-
-if __name__ == '__main__':
-	eventlet.wsgi.server(eventlet.listen(('0.0.0.0',5000)), app)
+if __name__ == "__main__":
+    socketio.run(app, debug=True, port=5000, host='0.0.0.0')

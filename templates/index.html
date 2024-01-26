@@ -1,26 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<title> flask websocket</title>
-</head>
-<body>
-	<div class="div">
-    <img id="image1">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
-    <script type="text/javascript">
-     var socket = io.connect('http://' + document.domain + ':' + location.port);
+  <head>
+    <meta charset="UTF-8">
+    <title>Flask Client Camera Web App</title>
 
-     socket.on('connect' ,function()
-     {
-     	socket.emit('check' ,{data: 'User Connected'})
-     });
-     socket.on('image', function(msg)
-     {  
-        //console.log(image)
-        const image_element=document.getElementById('image1');
-        image_element.src="data:image/jpeg;base64,"+msg;
-     });
- </script>
-</body>
+    <style>
+     #video {
+      transform: rotateY(180deg);
+      -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+      -moz-transform:rotateY(180deg); /* Firefox */
+
+     }
+    </style>
+    <script
+      src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+  </head>
+
+  <body>
+
+    <div id="container">
+      <video autoplay playsinline id="videoElement"></video>
+      <canvas id="canvas" width="400" height="300"></canvas>
+    </div>
+
+    <div class= 'video'>
+      <img id="photo" width="400" height="300">
+    </div>
+    <script src="{{ url_for('static',filename='script.js') }}"></script>
+  </body>
+
 </html>
