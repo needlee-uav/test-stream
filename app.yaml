@@ -1,7 +1,13 @@
-runtime: python
+# https://cloud.google.com/appengine/docs/standard/python3/building-app
+runtime: python39
 env: flex
-entrypoint: gunicorn -b :$PORT --worker-class eventlet -w 1 main:app
+entrypoint: gunicorn -b :8080 --worker-class eventlet -w 1 main:app
+handlers:
+- url: /static
+  static_dir: static
+
+- url: /.*
+  script: auto
 
 manual_scaling:
   instances: 1
-

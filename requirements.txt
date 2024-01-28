@@ -4,7 +4,7 @@ Flask-socketio
 python-engineio
 python-socketio
 simple-websocket
-cv2
+opencv-python
 numpy
-base64
+pybase64
 gunicorn
