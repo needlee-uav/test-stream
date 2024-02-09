@@ -2,10 +2,10 @@ import eventlet
 import eventlet.wsgi
 eventlet.monkey_patch()
 
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 
-app = Flask(__name__, static_folder="./static")
+app = Flask(__name__)
 app.config["SECRET_KEY"] = "secret!"
 socketio = SocketIO(app, CORS_ALLOW_ALL_ORIGINS=True)
 global current_image 
