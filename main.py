@@ -1,11 +1,7 @@
-import base64
-import os
 import eventlet
 import eventlet.wsgi
 eventlet.monkey_patch()
 
-import cv2
-import numpy as np
 from flask import Flask, render_template, send_from_directory
 from flask_socketio import SocketIO, emit
 
@@ -14,28 +10,6 @@ app.config["SECRET_KEY"] = "secret!"
 socketio = SocketIO(app, CORS_ALLOW_ALL_ORIGINS=True)
 global current_image 
 current_image = None
-
-
-@app.route("/favicon.ico")
-def favicon():
-    return send_from_directory(
-        os.path.join(app.root_path, "static"),
-        "favicon.ico",
-        mimetype="image/vnd.microsoft.icon",
-    )
-
-
-def base64_to_image(base64_string):
-    # Extract the base64 encoded binary data from the input string
-    base64_data = base64_string.split(",")[1]
-    # Decode the base64 data to bytes
-    image_bytes = base64.b64decode(base64_data)
-    # Convert the bytes to numpy array
-    image_array = np.frombuffer(image_bytes, dtype=np.uint8)
-    # Decode the numpy array as an image using OpenCV
-    image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
-    return image
-
 
 @socketio.on("connect")
 def test_connect():
@@ -55,7 +29,7 @@ def test(data):
     # result, frame_encoded = cv2.imencode(".jpg", frame_resized, encode_param)
 
     # processed_img_data = base64.b64encode(frame_encoded).decode()
-
+    print(data)
     b64_src = "data:image/jpg;base64,"
     processed_img_data = b64_src + data
     current_image = processed_img_data
