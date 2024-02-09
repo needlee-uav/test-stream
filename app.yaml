@@ -1,6 +1,6 @@
 # https://cloud.google.com/appengine/docs/standard/python3/building-app
-runtime: python39
-env: flex
+runtime: python311
+entrypoint: gunicorn -b :8080 --worker-class eventlet -w 1 main:app
 
 handlers:
 - url: /static
@@ -8,6 +8,3 @@ handlers:
 
 - url: /.*
   script: auto
-
-manual_scaling:
-  instances: 1

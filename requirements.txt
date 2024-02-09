@@ -1,1 +1,7 @@
 Flask
+eventlet
+Flask-socketio
+python-engineio
+python-socketio
+simple-websocket
+gunicorn
