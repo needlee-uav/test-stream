@@ -1,6 +1,11 @@
 # https://cloud.google.com/appengine/docs/standard/python3/building-app
-runtime: python311
+runtime: python
+env: flex
+
 entrypoint: gunicorn -b :8080 --worker-class eventlet -w 1 main:app
+
+runtime_config:
+  python_version: 3
 
 handlers:
 - url: /static
@@ -8,3 +13,9 @@ handlers:
 
 - url: /.*
   script: auto
+  
+manual_scaling:
+  instances: 1
+
+network:
+  session_affinity: true
