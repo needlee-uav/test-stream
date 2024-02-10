@@ -5,7 +5,8 @@ env: flex
 entrypoint: gunicorn -b :8080 --worker-class eventlet -w 1 main:app
 
 runtime_config:
-  python_version: 3
+    operating_system: "ubuntu22"
+    runtime_version: "3.11"
 
 handlers:
 - url: /static
