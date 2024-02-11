@@ -8,7 +8,15 @@ socket.on("connect", function () {
   socket.emit("update_sid");
 });
 
-socket.on("processed_image", function (image) {
-  console.log("update image")
-  photo.setAttribute("src", image);
+socket.on("init_marker", function (data) {
+  console.log(data)
+  moveMap(data.lat, data.lon);
+  moveMarker(data)
+  show_hide_vehicle_card(true);
+});
+
+socket.on("update_vehicle", function (data) {
+  updateParams(data.params)
+  moveMarker(data.params)
+  photo.setAttribute("src", data.image);
 });
