@@ -1,17 +1,12 @@
-function setReady() {
-    var xhttp = new XMLHttpRequest()
-    var test_mode = window.document.getElementById("test_mode").value;
-    xhttp.open('GET', `ready?test_mode=${test_mode}`, true);
-    xhttp.setRequestHeader("Content-type", 'application/json;charset=UTF-8');
-    xhttp.send();
-}
 
 function show_hide_vehicle_card(show) {
     var card = window.document.getElementById("drone_config_menu_container");
     if (show) {
         card.style.display = 'block';
-    } else {
+    } else if (card.style.display == 'block') {
         card.style.display = 'none';
+    } else {
+        card.style.display = 'block';
     }
 }
 

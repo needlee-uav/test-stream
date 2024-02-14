@@ -29,7 +29,6 @@ function moveMap(lat, lon) {
 
 function updateParams(params) {
     // vehicle_details
-    window.document.getElementById('vehicle_id').innerText = "Test run";
     window.document.getElementById('vehicle_details').innerText = "Connected";
     window.document.getElementById('lat_param').innerText = `Lat: ${params.lat}`;
     window.document.getElementById('lon_param').innerText = `Lon: ${params.lon}`;
