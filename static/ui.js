@@ -20,6 +20,22 @@ function displayReadyButton() {
     }
 }
 
+function showHideCamera() {
+    const camera = window.document.getElementById("camera");
+    const camera_btn = window.document.getElementById("camera_btn");
+    const hide_camera_btn = window.document.getElementById("hide_camera_btn");
+    console.log(camera.style.display)
+    if (camera.style.display == "none") {
+      camera.style.display = "inline";
+      hide_camera_btn.style.display = "inline"
+      camera_btn.style.display = "none";
+    } else {
+      camera.style.display = "none";
+      hide_camera_btn.style.display = "none"
+      camera_btn.style.display = "inline";
+    }
+  }
+  
 function refresh() {
     map.removeLayer(droneMarker);
     map.setView(START_POINT, 7);

@@ -65,23 +65,6 @@
             <button id="camera_btn" style="display: inline;" type="button" onclick="showHideCamera()" class="btn btn-primary"><i class="bi bi-camera-video"></i></button>
             <button id="hide_camera_btn" style="display: none;" type="button" onclick="showHideCamera()" class="btn btn-primary"><i class="bi bi-camera-video-off"></i></button>
           </div>
-          <script>
-            function showHideCamera() {
-              const camera = window.document.getElementById("camera");
-              const camera_btn = window.document.getElementById("camera_btn");
-              const hide_camera_btn = window.document.getElementById("hide_camera_btn");
-              console.log(camera.style.display)
-              if (camera.style.display == "none") {
-                camera.style.display = "inline";
-                hide_camera_btn.style.display = "inline"
-                camera_btn.style.display = "none";
-              } else {
-                camera.style.display = "none";
-                hide_camera_btn.style.display = "none"
-                camera_btn.style.display = "inline";
-              }
-            }
-          </script>
         </div>
       </div>
     </div>

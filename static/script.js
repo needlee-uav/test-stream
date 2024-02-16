@@ -36,5 +36,6 @@ function setReady() {
   
   var test_mode = window.document.getElementById("test_mode_name").innerText;
   console.log(MODES.get(test_mode))
+  window.document.getElementById("ready_button_container").style.display = "none";
   socket.emit("ready", {"test_mode": test_mode});
 }
