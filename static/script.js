@@ -9,9 +9,13 @@ socket.on("connect", function () {
 
 socket.on("init_marker", function (data) {
   window.document.getElementById('vehicle_id').innerText = data.id;
+  if (data.test_mode) {
+    window.document.getElementById('test_mode').style = "display: inline";
+    displayReadyButton();
+  }
+  window.document.getElementById('params').style = "display: inline";
   moveMap(data.lat, data.lon);
   moveMarker(data)
-  show_hide_vehicle_card(true);
 });
 
 socket.on("update_vehicle", function (data) {
@@ -21,6 +25,16 @@ socket.on("update_vehicle", function (data) {
 });
 
 function setReady() {
-  var test_mode = window.document.getElementById("test_mode").value;
+  const MODES = new Map();
+  MODES.set('Soft takeoff and land no GPS', 1);
+  MODES.set('Test offboard commands', 2);
+  MODES.set('Test GPS route navigation', 3);
+  MODES.set('Test emergency', 4);
+  MODES.set('Test camera streaming', 5);
+  MODES.set('Test capturing', 6);
+  MODES.set('Test following', 7);
+  
+  var test_mode = window.document.getElementById("test_mode_name").innerText;
+  console.log(MODES.get(test_mode))
   socket.emit("ready", {"test_mode": test_mode});
 }

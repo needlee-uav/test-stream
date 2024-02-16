@@ -28,32 +28,9 @@ function moveMap(lat, lon) {
 }
 
 function updateParams(params) {
-    // vehicle_details
-    window.document.getElementById('vehicle_details').innerText = "Connected";
+    // window.document.getElementById('vehicle_details').innerText = "Connected";
     window.document.getElementById('lat_param').innerText = `Lat: ${params.lat}`;
     window.document.getElementById('lon_param').innerText = `Lon: ${params.lon}`;
     window.document.getElementById('h_param').innerText = `Heading: ${params.h}`;
     window.document.getElementById('alt_param').innerText = `Alt: ${params.alt}`;
-}
-
-function updateLoc() {
-    var xhttp = new XMLHttpRequest()
-    xhttp.open('GET', 'update_loc', true);
-    xhttp.setRequestHeader("Content-type", 'application/json;charset=UTF-8');
-    xhttp.send();
-    xhttp.addEventListener('load', reqListener);
-    
-    function reqListener() {
-        var res = this.responseText.toString().split(";");
-        if (res[0] != 0) {  
-            moveMarker(res[0], res[1], res[2]);
-            updateParams(res[0], res[1], res[2], res[3]);
-            if (!is_focus) {
-                moveMap(res[0], res[1]);
-                show_hide_vehicle_card();
-                is_focus = true;
-            }
-        }
-    }
-    setTimeout(function(){ updateLoc() }, 500);  
 }

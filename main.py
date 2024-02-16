@@ -1,5 +1,5 @@
 # gunicorn -b :8080 --worker-class eventlet -w 1 main:app
-# KILL ON TESTS: kill -9 $(lsof -t -i:"8080")
+# kill -9 $(lsof -t -i:"8080")
 import eventlet
 import eventlet.wsgi
 eventlet.monkey_patch()
