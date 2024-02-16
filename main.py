@@ -15,6 +15,7 @@ class AppData:
     client = ""
     vehicle = ""
     marker = {"lat": 0, "lon": 0, "alt": 0}
+    id = ""
 
 global appData
 appData = AppData()
@@ -25,11 +26,17 @@ def update_sid():
     appData.client = request.sid
     print(f'client sid updated: {appData.client}')
     if appData.marker["lat"] != 0:
-        emit("init_marker", {"lat": appData.marker["lat"], "lon": appData.marker["lon"], "alt": appData.marker["alt"]}, room=appData.client)
+        emit("init_marker", {"id": appData.id, "lat": appData.marker["lat"], "lon": appData.marker["lon"], "alt": appData.marker["alt"]}, room=appData.client)
 
 @socketio.on("connect")
 def test_connect():
     emit("conn_success", {"data": "Connected"})
+
+@socketio.on("disconnect")
+def disconnect():
+    global appData
+    if request.sid == appData.vehicle:
+        appData.id = ""
 
 @socketio.on("ready")
 def ready(data):
@@ -42,6 +49,7 @@ def vehicle_sign_in(data):
     if data["id"] in DRONE_IDS:
         global appData
         appData.vehicle = request.sid
+        appData.id = data["id"]
         appData.marker["lat"] = data["lat"]
         appData.marker["lon"] = data["lon"]
         appData.marker["alt"] = data["alt"]

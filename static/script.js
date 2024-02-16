@@ -8,6 +8,11 @@ socket.on("connect", function () {
 });
 
 socket.on("init_marker", function (data) {
+  console.log(data)
+  if (data.id == "") {
+    console.log("No vehicles connected");
+    return
+  }
   window.document.getElementById('vehicle_id').innerText = data.id;
   if (data.test_mode) {
     window.document.getElementById('test_mode').style = "display: inline";
