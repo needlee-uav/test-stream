@@ -35,3 +35,13 @@
     position: absolute;
     z-index: 1;
   }
+
+  #attitude-dir-box {
+    border-radius: 29px;
+    background: linear-gradient(
+      #6699FF 0%,
+      #6699FF 50%,
+      #996600 50%,
+      #996600 100%
+    );
+  }

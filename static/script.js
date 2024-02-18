@@ -26,8 +26,23 @@ socket.on("init_marker", function (data) {
 socket.on("update_vehicle", function (data) {
   updateParams(data.params)
   moveMarker(data.params)
+  updateHorizont(data.params.roll, data.params.pitch)
   photo.setAttribute("src", data.image);
 });
+
+function updateHorizont(roll, pitch) {
+  var attitude = window.document.getElementById("attitude-dir-box");
+  pitch = 50 + pitch*1.15;
+  roll = 180 + roll;
+  attitude.style.background = `
+  linear-gradient(
+    ${roll}deg,
+    #6699FF 0%,
+    #6699FF ${pitch}%,
+    #996600 ${pitch}%,
+    #996600 100%
+  )`;
+}        
 
 function setReady() {
   const MODES = new Map();
