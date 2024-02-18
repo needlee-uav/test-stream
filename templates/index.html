@@ -32,6 +32,9 @@
             <img id="photo" width="320" height="320">
           </div>
         </div>
+        <div style="position: absolute; bottom: 1%; left: 2%; transform: translate(-2%, -1%);">
+          <img id="attitude-dir-box" src="{{ url_for('static', filename='attitude-dir-box.png') }}">
+        </div>
         <div class="holder" style="display: flex;">
           <div style="display: block; margin: 20px;">
             <h4>
@@ -72,5 +75,32 @@
     <script src="{{ url_for('static', filename='osm.js') }}"></script>
     <script src="{{ url_for('static', filename='osm.rotatedMarker.js') }}"></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <style>
+      #attitude-dir-box {
+        border-radius: 29px;
+        background: linear-gradient(
+          #6699FF 0%,
+          #6699FF 50%,
+          #996600 50%,
+          #996600 100%
+        );
+      }
+    </style>
+    <script>
+      function updateHorizont(roll, pitch) {
+        var attitude = window.document.getElementById("attitude-dir-box");
+        roll = 50 + roll*1.15;
+        pitch = 180 + pitch;
+        attitude.style.background = `
+        linear-gradient(
+          ${pitch}deg,
+          #6699FF 0%,
+          #6699FF ${roll}%,
+          #996600 ${roll}%,
+          #996600 100%
+        )`;
+      }            
+      updateHorizont(-4, 12);
+    </script>
   </body>
 </html>

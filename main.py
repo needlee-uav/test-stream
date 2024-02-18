@@ -5,6 +5,9 @@ import eventlet.wsgi
 eventlet.monkey_patch()
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit
+import cv2 as cv
+import base64
+import numpy as np
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "secret!"
@@ -56,10 +59,20 @@ def vehicle_sign_in(data):
         print(f'vehicle sid updated: {appData.vehicle}')
         emit("init_marker", data, room=appData.client)
 
+def base64_resize(base64_string, shape):
+    im_bytes = base64.b64decode(base64_string)
+    im_arr = np.frombuffer(im_bytes, dtype=np.uint8)
+    img = cv.imdecode(im_arr, flags=cv.IMREAD_COLOR)
+    img_r = cv.resize(img, shape, interpolation = cv.INTER_AREA)
+    im_bytes = cv.imencode('.jpg', img_r)[1].tobytes()
+    return base64.encodebytes(im_bytes).decode("utf-8")
+
+
 @socketio.on("stream")
 def stream(data):
     global appData
-    emit("update_vehicle", {"image": "data:image/jpeg;base64," + data["frame"], "params": data["log"]}, room=appData.client)
+    frame = base64_resize(data["frame"], (data["shape"]["w"], data["shape"]["h"]))
+    emit("update_vehicle", {"image": "data:image/jpeg;base64," + frame, "params": data["log"]}, room=appData.client)
     
 @app.route("/")
 def index():

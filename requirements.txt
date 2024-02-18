@@ -5,3 +5,6 @@ python-engineio
 python-socketio
 simple-websocket
 gunicorn
+base64
+opencv-python
+numpy
