@@ -32,7 +32,7 @@ socket.on("update_vehicle", function (data) {
 
 function updateHorizont(roll, pitch) {
   var attitude = window.document.getElementById("attitude-dir-box");
-  pitch = 50 + pitch*1.15;
+  pitch = 50 + pitch*1.3;
   roll = 180 + roll;
   attitude.style.background = `
   linear-gradient(

@@ -33,7 +33,10 @@
           </div>
         </div>
         <div style="position: absolute; bottom: 1%; left: 2%; transform: translate(-2%, -1%);">
-          <img id="attitude-dir-box" src="{{ url_for('static', filename='attitude-dir-box.png') }}">
+          <img id="attitude-dir-box" src="{{ url_for('static', filename='horizont-box.png') }}">
+        </div>
+        <div id="ready_button_container" style="display: none; position: absolute; bottom: 1%; left: 50%; transform: translate(-50%, -1%);">
+          <button id="ready_button" type="button" onclick="setReady()" class="btn btn-primary">Ready</button>
         </div>
         <div class="holder" style="display: flex;">
           <div style="display: block; margin: 20px;">
@@ -59,9 +62,6 @@
               <h5><span id="lon_param" class="badge rounded-pill text-bg-secondary">None</span></h5>
               <h5><span id="h_param" class="badge rounded-pill text-bg-secondary">None</span></h5>
               <h5><span id="alt_param" class="badge rounded-pill text-bg-secondary">None</span></h5>
-            </div>
-            <div id="ready_button_container" style="display: none;">
-              <button id="ready_button" type="button" onclick="setReady()" class="btn btn-primary">Ready</button>
             </div>
           </div>
           <div style="position: absolute; top: 20px; right: 20px;">
