@@ -21,6 +21,9 @@ var startLine = false;
 var endLine = false;
 var homeCoords = false;
 function addNavPoint(coords) {
+    if (GPS_POINTS.length != 0 && !gpsValidateDistance(GPS_POINTS[GPS_POINTS.length-1].coords[0], GPS_POINTS[GPS_POINTS.length-1].coords[1], coords[0], coords[1])) {
+        return
+    }
     if (GPS_POINTS.length < GPS_POINT_ICONS.length) {
         GPS_POINTS.push(new Point(
             GPS_POINT_ICONS[GPS_POINTS.length], 
@@ -97,9 +100,7 @@ function connectPoints() {
 }
 
 
-function gpsValidateDistance(lat2, lon2) {
-    const lat1 = homeCoords[0];
-    const lon1 = homeCoords[1];
+function gpsValidateDistance(lat1, lon1, lat2, lon2) {
     const R = 6378.137;
     dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
     dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
@@ -107,7 +108,7 @@ function gpsValidateDistance(lat2, lon2) {
     c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     d = R * c;
     result = d * 1000;
-    if (result > 150) {
+    if (result > 150 || result < 5) {
       return false;
     }
     return true;
@@ -115,7 +116,7 @@ function gpsValidateDistance(lat2, lon2) {
 
 map.on("click", (event)=> {
     if (pickPoints) {
-        if (gpsValidateDistance(event.latlng.lat , event.latlng.lng)) {
+        if (gpsValidateDistance(homeCoords[0], homeCoords[1], event.latlng.lat , event.latlng.lng)) {
             addNavPoint([event.latlng.lat , event.latlng.lng]);
         } 
     }
