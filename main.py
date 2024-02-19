@@ -45,6 +45,7 @@ def disconnect():
 def ready(data):
     global appData
     if appData.vehicle != "":
+        print(data)
         emit("ready", data, room=appData.vehicle)
 
 @socketio.on("vehicle_sign_in")

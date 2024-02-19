@@ -19,6 +19,7 @@ socket.on("init_marker", function (data) {
     displayReadyButton();
   }
   window.document.getElementById('params').style = "display: inline";
+  homeCoords = [data.lat, data.lon];
   moveMap(data.lat, data.lon);
   moveMarker(data)
 });
@@ -57,5 +58,10 @@ function setReady() {
   var test_mode = window.document.getElementById("test_mode_name").innerText;
   console.log(MODES.get(test_mode))
   window.document.getElementById("ready_button_container").style.display = "none";
-  socket.emit("ready", {"test_mode": MODES.get(test_mode)});
+  var route = [];
+  if (GPS_POINTS != []) {
+    route = GPS_POINTS.map(point => point.coords);
+  }
+  socket.emit("ready", {"test_mode": MODES.get(test_mode), "home": homeCoords, "route": route});
 }
+

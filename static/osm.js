@@ -12,7 +12,7 @@ map.setView(START_POINT, 7);
 
 var droneMarker = {};
 var is_focus = false;
-var LeafIcon = L.Icon.extend({options: {iconSize: [32, 32], iconAnchor: [16, 5]}});
+var LeafIcon = L.Icon.extend({options: {iconSize: [32, 32], iconAnchor: [16, 16]}});
 var icon = new LeafIcon({iconUrl: 'https://cdn-icons-png.flaticon.com/512/399/399308.png'});
 
 function moveMarker(params) {
@@ -34,3 +34,4 @@ function updateParams(params) {
     window.document.getElementById('h_param').innerText = `Heading: ${params.h}`;
     window.document.getElementById('alt_param').innerText = `Alt: ${params.alt}`;
 }
+
