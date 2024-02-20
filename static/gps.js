@@ -99,7 +99,6 @@ function connectPoints() {
     endLine.addTo(map);
 }
 
-
 function gpsValidateDistance(lat1, lon1, lat2, lon2) {
     const R = 6378.137;
     dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
@@ -115,7 +114,7 @@ function gpsValidateDistance(lat1, lon1, lat2, lon2) {
 }
 
 map.on("click", (event)=> {
-    if (pickPoints) {
+    if (pickPoints && window.document.body.scrollHeight - event.containerPoint.y > 70) {
         if (gpsValidateDistance(homeCoords[0], homeCoords[1], event.latlng.lat , event.latlng.lng)) {
             addNavPoint([event.latlng.lat , event.latlng.lng]);
         } 
